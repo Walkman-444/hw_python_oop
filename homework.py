@@ -1,23 +1,25 @@
+from dataclasses import dataclass, asdict
+
+@dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
-    def __init__(self, training_type: str,
-                 duration: float,
-                 distance: float,
-                 speed: float,
-                 calories: float) -> None:
-        self.training_type = training_type
-        self.duration = duration
-        self.distance = distance
-        self.speed = speed
-        self.calories = calories
+    training_type: str
+    duration: float
+    distance: float
+    speed: float
+    calories: float
+
+    MESSAGE_OUTPUT = (
+        'Тип тренировки: {training_type}; '
+        'Длительность: {duration:.3f} ч.; '
+        'Дистанция: {distance:.3f} км; '
+        'Ср. скорость: {speed:.3f} км/ч; '
+        'Потрачено ккал: {calories:.3f}.'
+    )
 
     def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type}; '
-                f'Длительность: {self.duration:.3f} ч.; '
-                f'Дистанция: {self.distance:.3f} км; '
-                f'Ср. скорость: {self.speed:.3f} км/ч; '
-                f'Потрачено ккал: {self.calories:.3f}.')
+        return self.MESSAGE_OUTPUT.format(**asdict(self))
 
 
 class Training:
@@ -124,16 +126,18 @@ class Swimming(Training):
                 * self.weight * self.duration)
 
 
-def read_package(workout_type: str, data: list) -> Training:
+def read_package(workout_type: str, data: list[str]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    read_package_dict: dict = {
+    workout_types: dict = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
     }
-    if workout_type not in read_package_dict:
+    print(type(workout_type))
+    
+    if workout_type not in  workout_types:
         raise KeyError('Ошибка')
-    return read_package_dict[workout_type](*data)
+    return  workout_types[workout_type](*data)
 
 
 def main(training: Training) -> None:
