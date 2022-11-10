@@ -1,5 +1,6 @@
 from dataclasses import dataclass, asdict
 
+
 @dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
@@ -128,16 +129,14 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list[str]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    workout_types: dict = {
+    workout_types: dict[str] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
     }
-    print(type(workout_type))
-    
-    if workout_type not in  workout_types:
+    if workout_type not in workout_types:
         raise KeyError('Ошибка')
-    return  workout_types[workout_type](*data)
+    return workout_types[workout_type](*data)
 
 
 def main(training: Training) -> None:
