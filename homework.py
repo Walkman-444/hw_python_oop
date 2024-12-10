@@ -129,8 +129,6 @@ class Swimming(Training):
 
 
 def read_package(workout_type: str, data: List[float]) -> Training:
-    # конечно же float,ведь он же включает в себя int!!!
-    # Не знаю как тут показать смайлик рука-лицо))
     """Прочитать данные полученные от датчиков."""
     workout_types: dict[str, Type[Training]] = {
         'SWM': Swimming,
